@@ -17,10 +17,7 @@
    <children>
       <Button mnemonicParsing="false" onAction="#onSaveClicked" prefHeight="25.0" prefWidth="90.0" text="Save" />
       <AnchorPane fx:id="apPane" prefHeight="500.0" prefWidth="500.0">
-         <children>
-            <StackPane layoutX="56.0" layoutY="80.0" onMouseClicked="#onVertexClick" />
-            <StackPane layoutX="289.0" layoutY="230.0" onMouseClicked="#onVertexClick" />
-         </children>
+
       </AnchorPane>
       <GridPane>
         <columnConstraints>

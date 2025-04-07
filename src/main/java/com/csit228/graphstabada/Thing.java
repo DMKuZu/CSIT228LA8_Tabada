@@ -9,10 +9,15 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
-public class Thing extends Node {
-    StackPane sp;
+public class Thing{
+    public StackPane sp;
 
     public Thing(String text,double x_val, double y_val) {
+        sp = new StackPane();
+        sp.setLayoutX(x_val);
+        sp.setLayoutY(y_val);
+
+
         LinearGradient paint = new LinearGradient(
                 0.0, 0.3318, 1.0, 1.0, true, CycleMethod.NO_CYCLE,
                 new Stop(0.0, new Color(1.0, 0.0, 0.0, 0.729)),
@@ -20,14 +25,9 @@ public class Thing extends Node {
 
         Circle circle = new Circle(33.0,paint);
         Text name = new Text(text);
-        sp = new StackPane(circle,name);
+        sp.getChildren().add(circle);
+        sp.getChildren().add(name);
 
-        sp.setLayoutX(x_val);
-        sp.setLayoutY(y_val);
     }
 
-    @Override
-    public Node getStyleableNode() {
-        return super.getStyleableNode();
-    }
 }

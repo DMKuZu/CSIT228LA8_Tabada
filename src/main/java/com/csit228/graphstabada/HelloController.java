@@ -28,9 +28,13 @@ public class HelloController {
     private double offsetX, offsetY;
 
     private void setSPListener(StackPane sp){
+        sp.setOnMouseClicked((MouseEvent event) ->{
+            /*if(event.getButton() == MouseButton.SECONDARY)*/ onVertexClick(event);
+        });
+
         sp.setOnMousePressed((MouseEvent event) ->{
             offsetX = event.getSceneX() - sp.getLayoutX();
-            offsetY = event.getSceneX() - sp.getLayoutX();
+            offsetY = event.getSceneY() - sp.getLayoutY();
         });
 
         sp.setOnMouseDragged((MouseEvent event) ->{
@@ -38,9 +42,7 @@ public class HelloController {
             sp.setLayoutY(event.getSceneY() - offsetY);
         });
 
-        sp.setOnMouseClicked((MouseEvent event) ->{
-            if(event.getButton() == MouseButton.SECONDARY) onVertexClick(event);
-        });
+
     }
     public void initialize(){
         vertices = new ArrayList<>();
@@ -59,18 +61,29 @@ public class HelloController {
         }
     }
 
-    public void onSaveClicked(ActionEvent event) {
-        for(Node sp : apPane.getChildren()){
-            Text text = (Text) ((StackPane) sp).getChildren().get(1);
-            double x_val = sp.getLayoutX();
-            double y_val = sp.getLayoutY();
+    public void onSaveClicked() {
+        /*for(StackPane sp:  apPane.getChildren()){
+            double x = sp.getLayoutX();
+            double y = sp.getLayoutY();
+            String text = sp.getChildren().get(1).getText();
 
-            Vertex v = new Vertex(text.getText(),x_val,y_val);
-            vertices.add(v);
+            vertices.add(new Vertex(text,x,y));
+        }*/
+
+        vertices.clear(); // Clear list to avoid duplicates
+
+        for(Node sp: apPane.getChildren()){
+            StackPane stackPane = (StackPane) sp;
+            double x = sp.getLayoutX();
+            double y = sp.getLayoutY();
+
+            Text text = (Text) stackPane.getChildren().get(1);
+            vertices.add(new Vertex(text.getText(), x, y));
         }
 
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("pane.txt"))){
             oos.writeObject(vertices);
+            System.out.println("SAVED "+vertices.size()+" vertices");
         } catch (IOException e) {
             System.err.println(e.getClass());
         }
@@ -82,6 +95,7 @@ public class HelloController {
         Thing sp = new Thing(name,250,250);
 
         apPane.getChildren().add(sp.sp);
+
         setSPListener(sp.sp);
     }
 
